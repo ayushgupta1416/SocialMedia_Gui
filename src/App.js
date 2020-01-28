@@ -1,25 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import home from './pages/home'
+import login from './pages/login'
+import signup from './pages/signup'
+import Navbar from './components/navbar';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/';
+import themeFile from './utility/theme';
+import jwtDecode from 'jwt-decode';
+import AuthRoute from './utility/AuthRoute'
+//import { indigo } from '@material-ui/core/styles/createPalette';
 
+let authenticated;
+const token=localStorage.FBtoken;
+
+if(token){
+  const decodedToken=jwtDecode(token);
+  console.log(decodedToken);
+  if(decodedToken.exp*1000 < Date.now()){
+    window.location.href='/login'
+    authenticated=false;
+  }
+  else{
+    authenticated=true;
+  }
+}
+
+const theme = createMuiTheme(themeFile);
+console.log(theme);
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className="App">
+        <Router>
+          <div className="container">
+            <Navbar />
+            <Switch>
+              <Route exact path="/" component={home} />
+              <AuthRoute exact path="/login" component={login} authenticated={authenticated}/>
+              <AuthRoute exact path="/signup" component={signup} authenticated={authenticated}/>
+            </Switch>
+          </div>
+        </Router>
+
+      </div>
+    </MuiThemeProvider>
   );
 }
 
