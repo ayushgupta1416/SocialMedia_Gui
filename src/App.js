@@ -9,20 +9,22 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/';
 import themeFile from './utility/theme';
 import jwtDecode from 'jwt-decode';
 import AuthRoute from './utility/AuthRoute'
-//import { indigo } from '@material-ui/core/styles/createPalette';
+//Redux
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 let authenticated;
-const token=localStorage.FBtoken;
+const token = localStorage.FBtoken;
 
-if(token){
-  const decodedToken=jwtDecode(token);
+if (token) {
+  const decodedToken = jwtDecode(token);
   console.log(decodedToken);
-  if(decodedToken.exp*1000 < Date.now()){
-    window.location.href='/login'
-    authenticated=false;
+  if (decodedToken.exp * 1000 < Date.now()) {
+    window.location.href = '/login'
+    authenticated = false;
   }
-  else{
-    authenticated=true;
+  else {
+    authenticated = true;
   }
 }
 
@@ -31,19 +33,21 @@ console.log(theme);
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
-        <Router>
-          <div className="container">
-            <Navbar />
-            <Switch>
-              <Route exact path="/" component={home} />
-              <AuthRoute exact path="/login" component={login} authenticated={authenticated}/>
-              <AuthRoute exact path="/signup" component={signup} authenticated={authenticated}/>
-            </Switch>
-          </div>
-        </Router>
+      <Provider store={store}>
+        <div className="App">
+          <Router>
+            <div className="container">
+              <Navbar />
+              <Switch>
+                <Route exact path="/" component={home} />
+                <AuthRoute exact path="/login" component={login} authenticated={authenticated} />
+                <AuthRoute exact path="/signup" component={signup} authenticated={authenticated} />
+              </Switch>
+            </div>
+          </Router>
 
-      </div>
+        </div>
+      </Provider>
     </MuiThemeProvider>
   );
 }
