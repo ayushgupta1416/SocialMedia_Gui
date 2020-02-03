@@ -34,6 +34,9 @@ class Profile extends Component {
         fileInput.click();
 
     };
+    handleLogout = () => {
+        this.props.logoutUser();
+    };
     render() {
         const { classes, user: {
             credentials: { handle, createdAt, imageUrl, bio, location },
@@ -54,7 +57,7 @@ class Profile extends Component {
                         />
                         <Tooltip title="Edit Profile Picture" placement="top">
                             <IconButton onClick={this.handleEditPicture} className="button">
-                                <EditIcon color="primary"/>
+                                <EditIcon color="primary" />
                             </IconButton>
 
                         </Tooltip>
@@ -81,6 +84,9 @@ class Profile extends Component {
                         <CalendarToday color="primary" />{' '}
                         <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
+                    <IconButton tip="Logout" onClick={this.handleLogout}>
+                        <KeyboardReturn color="primary" />
+                    </IconButton>
 
                 </div>
             </Paper>
@@ -88,7 +94,7 @@ class Profile extends Component {
                 <Paper className={classes.paper}>
                     <Typography variant="body2" align="center">
                         No profile found, please login again
-            </Typography>
+                    </Typography>
                     <div className={classes.buttons}>
                         <Button
                             variant="contained"
@@ -97,7 +103,7 @@ class Profile extends Component {
                             to="/login"
                         >
                             Login
-              </Button>
+                        </Button>
                         <Button
                             variant="contained"
                             color="secondary"
@@ -115,18 +121,18 @@ class Profile extends Component {
 }
 const mapStateToProps = (state) => ({
     user: state.user
-  });
-  
-  const mapActionsToProps = { logoutUser, uploadImage };
-  
-  Profile.propTypes = {
+});
+
+const mapActionsToProps = { logoutUser, uploadImage };
+
+Profile.propTypes = {
     logoutUser: PropTypes.func.isRequired,
     uploadImage: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
-  };
-  
-  export default connect(
+};
+
+export default connect(
     mapStateToProps,
     mapActionsToProps
-  )(withStyles(styles)(Profile));
+)(withStyles(styles)(Profile));
