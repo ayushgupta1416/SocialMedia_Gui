@@ -1,4 +1,4 @@
-import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_USER ,SET_UNAUTHENTICATED} from '../types';
+import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_USER ,SET_UNAUTHENTICATED,LOADING_USER} from '../types';
 import axios from 'axios';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -12,7 +12,7 @@ export const loginUser = (userData, history) => (dispatch) => {
             const FBtoken = `Bearer ${res.data.token}`;
             localStorage.setItem('FBtoken', FBtoken);
             axios.defaults.headers.common['Authorization'] = FBtoken;
-            dispatch(getUSerData());
+            dispatch(getUserData());
             dispatch({
                 type: CLEAR_ERRORS
             });
@@ -28,7 +28,7 @@ export const loginUser = (userData, history) => (dispatch) => {
 };
 export const signupUser = (newUserData, history) => (dispatch) => {
     dispatch({
-        type: LOADING_UI
+        type: LOADING_USER
     });
 
     axios.post('/signup', newUserData)
@@ -37,7 +37,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
             const FBtoken = `Bearer ${res.data.token}`;
             localStorage.setItem('FBtoken', FBtoken);
             axios.defaults.headers.common['Authorization'] = FBtoken;
-            dispatch(getUSerData());
+            dispatch(getUserData());
             dispatch({
                 type: CLEAR_ERRORS
             });
@@ -57,7 +57,10 @@ export const logoutUser = () => (dispatch) => {
     dispatch({ type: SET_UNAUTHENTICATED });
   };
 
-export const getUSerData = () => (dispatch) => {
+export const getUserData = () => (dispatch) => {
+    dispatch({
+        type:LOADING_USER
+    });
     axios.get('/user')
         .then(res => {
             //console.log(res.data);

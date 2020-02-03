@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import{ SET_AUTHENTICATED} from './redux/types';
+import {getUserData,logoutUser} from './redux/actions/useractions';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import home from './pages/home'
 import login from './pages/login'
@@ -12,6 +14,7 @@ import AuthRoute from './utility/AuthRoute'
 //Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import axios from 'axios';
 
 let authenticated;
 const token = localStorage.FBtoken;
@@ -20,11 +23,14 @@ if (token) {
   const decodedToken = jwtDecode(token);
   console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
-    window.location.href = '/login'
-    authenticated = false;
+    store.dispatch(logoutUser())
+    window.location.href = '/login';
   }
   else {
-    authenticated = true;
+    store.dispatch({
+      type:SET_AUTHENTICATED});
+      axios.defaults.headers.common['Authorization']=token;
+      store.dispatch(getUserData());
   }
 }
 
@@ -40,8 +46,8 @@ function App() {
               <Navbar />
               <Switch>
                 <Route exact path="/" component={home} />
-                <AuthRoute exact path="/login" component={login} authenticated={authenticated} />
-                <AuthRoute exact path="/signup" component={signup} authenticated={authenticated} />
+                <AuthRoute exact path="/login" component={login}  />
+                <AuthRoute exact path="/signup" component={signup}  />
               </Switch>
             </div>
           </Router>
