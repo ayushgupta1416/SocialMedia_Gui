@@ -1,4 +1,4 @@
-import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_USER ,SET_UNAUTHENTICATED,LOADING_USER} from '../types';
+import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_USER, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
 import axios from 'axios';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -55,11 +55,11 @@ export const logoutUser = () => (dispatch) => {
     localStorage.removeItem('FBtoken');
     delete axios.defaults.headers.common['Authorization'];
     dispatch({ type: SET_UNAUTHENTICATED });
-  };
+};
 
 export const getUserData = () => (dispatch) => {
     dispatch({
-        type:LOADING_USER
+        type: LOADING_USER
     });
     axios.get('/user')
         .then(res => {
@@ -73,13 +73,25 @@ export const getUserData = () => (dispatch) => {
             console.log(err);
         })
 };
+export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({
+        type: LOADING_USER
+    });
+    axios.post('/user', userDetails)
+        .then(res => {
+            dispatch(getUserData());
+        })
+        .catch(err => {
+            console.log(err);
+        })
+};
 
 export const uploadImage = (formData) => (dispatch) => {
     dispatch({
-        type:LOADING_USER
+        type: LOADING_USER
     });
-    axios.post('/user/image',formData)
-        .then(()=> {
+    axios.post('/user/image', formData)
+        .then(() => {
             //console.log(res.data);
             dispatch(getUserData());
         })

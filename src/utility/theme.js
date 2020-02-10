@@ -8,7 +8,8 @@ export default {
         main: '#f44336',
         dark: '#ba000d',
         contrastText: '#000',
-      }
+      },
+      //type:'dark'
   
     },
     typography:{

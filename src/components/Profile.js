@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import { IconButton } from '@material-ui/core';
 import { logoutUser, uploadImage } from '../redux/actions/useractions';
+import EditDetails from './EditDetails';
+
 
 
 const styles = (theme) => ({
@@ -84,9 +86,13 @@ class Profile extends Component {
                         <CalendarToday color="primary" />{' '}
                         <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
+                    <Tooltip title="Logout" placement="top">
                     <IconButton tip="Logout" onClick={this.handleLogout}>
                         <KeyboardReturn color="primary" />
                     </IconButton>
+                    </Tooltip>
+                    <EditDetails/>
+                    
 
                 </div>
             </Paper>
