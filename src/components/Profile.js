@@ -22,6 +22,7 @@ import EditDetails from './EditDetails';
 
 const styles = (theme) => ({
     ...theme.profileCss
+
 });
 
 class Profile extends Component {
