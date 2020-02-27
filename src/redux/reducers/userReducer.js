@@ -1,4 +1,4 @@
-import { SET_ERRORS, LOADING_USER, CLEAR_ERRORS, SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED,LIKE_SCREAM,UNLIKE_SCREAM } from '../types';
+import { SET_ERRORS, LOADING_USER, CLEAR_ERRORS, SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LIKE_SCREAM, UNLIKE_SCREAM ,DELETE_SCREAM} from '../types';
 
 const initialState = {
     authenticated: false,
@@ -46,6 +46,14 @@ export default function (state = initialState, action) {
                 likes: state.likes.filter(
                     (like) => like.screamId !== action.payload.screamId
                 )
+            };
+        case DELETE_SCREAM:
+            let index = state.screams.findIndex(
+                (scream) => scream.screamId === action.payload
+            );
+            state.screams.splice(index, 1);
+            return {
+                ...state
             };
 
 

@@ -14,9 +14,12 @@ import MyButton from '../utility/MyButton';
 import ChatIcon from '@material-ui/icons/Chat';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import { DELETE_SCREAM } from '../redux/types';
+import DeleteScream from '../components/DeleteScream'
 
 const styles = {
     card: {
+        position:'relative',
         display: 'flex',
         marginBottom: 20,
     },
@@ -57,7 +60,7 @@ class Scream extends Component {
                 commentCount
             },
             user: {
-                authenticated
+                authenticated, credentials:{handle}
             }
         } = this.props;
         const likeButton=!authenticated ?(
@@ -79,6 +82,9 @@ class Scream extends Component {
             )
 
         )
+        const deleteButton=authenticated && userHandle===handle ?(
+            <DeleteScream screamId={screamId}/>
+        ): null
 
         return (
 
@@ -92,12 +98,14 @@ class Scream extends Component {
                     <Typography variant="h5" color="primary" component={Link} to={`/users/${userHandle}`}>
                         {userHandle}
                     </Typography>
+                    {deleteButton}
                     <Typography variant="body2" color="textSecondary">
                         {dayjs(createdAt).fromNow()}
                     </Typography>
                     <Typography variant="body1">
                         {body}
                     </Typography>
+
                     {likeButton}
                     <span>{likeCount} Likes</span>
                     <MyButton tip="comments">
